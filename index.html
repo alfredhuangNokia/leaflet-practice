@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.css" />
+    <script src="https://npmcdn.com/leaflet@0.7.7/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
+    <style>
+        #mapid {
+            height: 90vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mapid"></div>
+    <button onclick="myFunction()">123</button>
+
+</body>
+<script type="text/javascript">
+
+    // 建立 Leaflet 地圖
+    var map = L.map('mapid');
+
+    // 設定經緯度座標
+    map.setView(new L.LatLng(22.992, 120.239), 12);
+
+    // 設定圖資來源
+    var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osm = new L.TileLayer(osmUrl, { minZoom: 8, maxZoom: 16 });
+    map.addLayer(osm);
+
+    var drawItem = new L.FeatureGroup();
+    map.addLayer(drawItem);
+
+    var option = {
+        position: 'topleft',
+        collapsed: true,
+        edit: {
+            featureGroup: drawItem,
+            edit: false,
+            remove: false,
+        },
+        draw: {
+            polygon: false,
+            marker: false,
+            circle: false,
+            polyline: false,
+        },
+    };
+    var drawControl = new L.Control.Draw(option);
+    map.addControl(drawControl);
+
+    map.on(L.Draw.Event.CREATED, function (e) {
+        // var layer = e.layer;
+        // drawItem.addLayer(layer);  // 必須將畫完的圖層加入
+        console.log(arguments);
+    });
+
+    var circle = L.circle(
+        [22.988, 120.220],   // 圓心座標
+        1000,                // 半徑（公尺）
+        {
+            color: 'red',      // 線條顏色
+            fillColor: '#f03', // 填充顏色
+            fillOpacity: 0.5   // 透明度
+        }
+    ).addTo(map).on("click", circleClick);
+
+    circle.bindPopup("這是圓圈。");
+
+    function circleClick(e) {
+        console.log(e);
+        
+    }
+
+    function myFunction(){
+        circle.openPopup();
+    }
+
+</script>
+
+</html>
