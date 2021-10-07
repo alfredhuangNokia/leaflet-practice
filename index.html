@@ -19,7 +19,6 @@
 
 <body>
     <div id="mapid"></div>
-    <button onclick="myFunction()">123</button>
 
 </body>
 <script type="text/javascript">
@@ -59,28 +58,57 @@
     map.on(L.Draw.Event.CREATED, function (e) {
         // var layer = e.layer;
         // drawItem.addLayer(layer);  // 必須將畫完的圖層加入
-        console.log(arguments);
+        var leftBound = arguments[0].layer._latlngs[0].lng;
+        var rightBound = arguments[0].layer._latlngs[2].lng;
+        var upperBound = arguments[0].layer._latlngs[2].lat;
+        var lowerBound = arguments[0].layer._latlngs[0].lat;
+        setTimeout(function () {
+            if (isCircleInSelectedArea(circle1, leftBound, rightBound, upperBound, lowerBound)) {
+                circle1.openPopup();
+            };
+            if (isCircleInSelectedArea(circle2, leftBound, rightBound, upperBound, lowerBound)) {
+                circle2.openPopup();
+            };
+        }, 1000)
+
     });
 
-    var circle = L.circle(
-        [22.988, 120.220],   // 圓心座標
+    var circle1 = L.circle(
+        [22.988, 120.221],   // 圓心座標
         1000,                // 半徑（公尺）
         {
             color: 'red',      // 線條顏色
             fillColor: '#f03', // 填充顏色
             fillOpacity: 0.5   // 透明度
         }
-    ).addTo(map).on("click", circleClick);
+    ).addTo(map)
 
-    circle.bindPopup("這是圓圈。");
+    var circle2 = L.circle(
+        [22.980, 120.321],   // 圓心座標
+        1000,                // 半徑（公尺）
+        {
+            color: 'red',      // 線條顏色
+            fillColor: '#f03', // 填充顏色
+            fillOpacity: 0.5   // 透明度
+        }
+    ).addTo(map)
 
-    function circleClick(e) {
-        console.log(e);
-        
-    }
+    circle1.bindPopup(`
+        <strong>Test Title</strong><br>Site Info: 6163941
+    `);
 
-    function myFunction(){
-        circle.openPopup();
+    circle2.bindPopup(`
+        <strong>Test Title</strong><br>Site Info: 6163942
+    `);
+
+
+
+    function isCircleInSelectedArea(circle, leftBound, rightBound, upperBound, lowerBound) {
+        if (circle._latlng.lat < upperBound && circle._latlng.lat > lowerBound && circle._latlng.lng > leftBound && circle._latlng.lng < rightBound) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 </script>
