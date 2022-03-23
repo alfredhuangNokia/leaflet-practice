@@ -12,13 +12,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/0.4.2/leaflet.draw.js"></script>
     <style>
         #mapid {
-            height: 90vh;
+            /* height: 90vh; */
+            height: 400px;
+            width: 300px;
         }
     </style>
 </head>
 
 <body>
-    <div id="mapid"></div>
+    <div style="display: flex; justify-content: center;">
+        <div id="mapid"></div>
+    </div>
 
 </body>
 <script type="text/javascript">
@@ -27,11 +31,11 @@
     var map = L.map('mapid');
 
     // 設定經緯度座標
-    map.setView(new L.LatLng(22.992, 120.239), 12);
+    map.setView(new L.LatLng(23.9610,120.9719), 6);
 
     // 設定圖資來源
     var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osm = new L.TileLayer(osmUrl, { minZoom: 8, maxZoom: 16 });
+    var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: 16,attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
     map.addLayer(osm);
 
     var drawItem = new L.FeatureGroup();
@@ -75,7 +79,7 @@
 
     var circle1 = L.circle(
         [22.988, 120.221],   // 圓心座標
-        1000,                // 半徑（公尺）
+        10,                // 半徑（公尺）
         {
             color: 'red',      // 線條顏色
             fillColor: '#f03', // 填充顏色
